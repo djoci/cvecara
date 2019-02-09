@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Cvećara</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Krub:300,400" rel="stylesheet"> 
+    <link rel="stylesheet" type="text/css" media="screen" href="cvecara.css" />
+  </head>
+  <body>
+    <h1 class="text-center">Cvećara</h1>
+    <div class="container">
+        
+            <form action="pregledS.html" method="GET" onsubmit="zapamti()">
+                <div class="form-group">
+                <label for="korisnik">Ime i Prezime</label>
+					 <input type="text" placeholder="Ime i Prezime" name="korisnik" id="korisnik" required="" class="form-control">	                
+                </div>
+               <div class="form-group form-check"><label class="form-check-label"><input type="radio" name="creditcard" class="form-check-input" required="" value="Visa"> Visa</label></div>
+                <div class="form-group form-check"><label class="form-check-label"><input type="radio" name="creditcard" class="form-check-input" required="" value="Mastercard"> Mastercard</label></div>
+                 <div class="form-group form-check"><label class="form-check-label"><input type="checkbox" name="includedelivery" id="includedelivery" class="form-check-input" value=""> Uključiti dostavu</label></div>
+                 
+                <div class="form-group">
+                    Sadržaj aranžmana: <label for="kompl-cena">Ukupna cena</label> 
+                    <input type="text" id="kompl-cena" name="kompl-cena" class="form-control" value=0> dinara
+                </div>
+               <div class="table-responsive-sm">
+                <table class="table table-bordered table-hover">
+                    <tr>
+                        <td>Ruža</td>
+                        <td>
+                            <div class="form-group">
+                                <label for="ruz-kol">Količina: &nbsp; &nbsp; </label><br>
+                                <input type="number" id="ruz-kol" name="ruz-kol" class="form-control" value=0 min="0" max="101" onchange="osveziCenu('ruz-kol','ruz-kom','ruz-ukcena')">
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group">
+                                <label for="ruz-ukcena">Ukupna cena:</label><br>
+                                <input type="text" id="ruz-ukcena" name="ruz-ukcena" class="form-control" value=0>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group">
+                                <label for="ruz-kom">Po komadu:</label><br>
+                                <input type="text" id="ruz-kom" name="ruz-kom" class="form-control disabled" value="180" disabled> dinara
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Ljiljan</td>
+                        <td>
+                            <div class="form-group">
+                                <label for="ljilj-kol">Količina: &nbsp; &nbsp; </label><br>
+                                <input type="number" id="ljilj-kol" name="ljilj-kol" class="form-control"  value=0 min="0" max="101" onchange="osveziCenu('ljilj-kol','ljilj-kom','ljilj-ukcena')">
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group">
+                                <label for="ljilj-ukcena">Ukupna cena:</label><br>
+                                <input type="text" id="ljilj-ukcena" name="ljilj-ukcena" class="form-control" value=0>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group">
+                                <label for="ljilj-kom">Po komadu:</label><br>
+                                <input type="text" id="ljilj-kom" name="ljilj-kom" class="form-control disabled" value="250" disabled> dinara
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Gerber</td>
+                        <td>
+                            <div class="form-group">
+                                <label for="ger-kol">Količina: &nbsp; &nbsp; </label><br>
+                                <input type="number" id="ger-kol" name="ger-kol" class="form-control"  value="0" min="0" max="101" onchange="osveziCenu('ger-kol','ger-kom','ger-ukcena')">
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group">
+                                <label for="ger-ukcena">Ukupna cena:</label><br>
+                                <input type="text" id="ger-ukcena" name="ger-ukcena" class="form-control" value=0>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group">
+                                <label for="ger-kom">Po komadu:</label><br>
+                                <input type="text" id="ger-kom" name="ger-kom" class="form-control  disabled" value="305"  disabled> dinara
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+               </div>
+                <button type="submit" class="btn btn-primary btn-lg">Potvrdi kupovinu</button>
+            </form>
+        
+    </div> 
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+   <script>
+   function osveziCenu(IDprod, IDcena, IDukupno) {
+    document.getElementById(IDukupno).value=document.getElementById(IDprod).value * document.getElementById(IDcena).value;  
+   
+    osveziKupovinu();	  	
+   }
+      
+   function osveziKupovinu() {
+       document.getElementById('kompl-cena').value = parseInt(document.getElementById('ruz-ukcena').value) + 
+    															  parseInt(document.getElementById('ljilj-ukcena').value) +
+    															  parseInt(document.getElementById('ger-ukcena').value);	
+                                                                  localStorage.setItem("Cena", document.getElementById('kompl-cena').value);														  
+   }
+    function zapamti() {
+		var ruz = { quantity: document.getElementById("ruz-kol").value, price: document.getElementById("ruz-kom").value };
+		var ljilj = { quantity: document.getElementById("ljilj-kol").value, price: document.getElementById("ljilj-kom").value };
+		var ger = { quantity: document.getElementById("ger-kol").value, price: document.getElementById("ger-kom").value };
+		var user = {imeprezime: document.getElementById("korisnik").value};
+		var kartica = document.querySelector('input[name="creditcard"]:checked').value;
+		var dostava = document.getElementById('includedelivery').checked;
+		
+		//storing
+		localStorage.setItem('ruz', JSON.stringify(ruz));
+		localStorage.setItem('ljilj', JSON.stringify(ljilj));
+		localStorage.setItem('ger', JSON.stringify(ger));
+		localStorage.setItem('user', JSON.stringify(user));
+		localStorage.setItem('kartica', kartica);
+		localStorage.setItem('dostava', dostava);
+    } 
+
+    
+   </script>    
+    
+  </body>
+</html>
