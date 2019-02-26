@@ -15,34 +15,16 @@
     <h1 class="text-center">Cvećara</h1>
     <div class="container">
         
-            <form method="GET" onsubmit="zapamti()">
+ 
                 <div><b>Ime i prezime:</b> <span id="user"></span></div>
                 <div><b>Platna kartica:</b> <span id="kartica"></span></div>
                 <div id="dostava"></div>                
                 <div class="marg"><b>Ukupna cena:</b> <span id="kompl-cena"></span> </div>  
                <div class="table-responsive-sm">
-                <table class="table table-bordered table-hover">
-                    <tr id="ruza">
-                        <td>Ruža</td>
-                        <td > Količina: <span id="ruz-kol">OVDE IDE BROJ</span> </td>
-                        <td > <span id="ruz-ukcena"> </span> RSD</td>
-                        <td> Po komadu: <span id="ruz-kom"> </span></td>
-                    </tr>
-                    <tr id="ljiljan">
-                        <td>Ljiljan</td>
-                			<td> Količina: <span id="ljilj-kol">OVDE IDE BROJ</span> </td>
-                     		<td><span id="ljilj-ukcena"> </span> RSD</td>                           
-                            <td>Po komadu: <span id="ljilj-kom"> </span> </td>
-                    </tr>
-                    <tr id="gerber">
-                        <td>Gerber</td>
-                        <td > Količina: <span id="ger-kol">OVDE IDE BROJ</span> </td>
-                     	<td ><span id="ger-ukcena"> </span> RSD</td>                           
-                        <td>Po komadu: <span id="ger-kom"> </span> </td>
-                    </tr>
+                <table class="table table-bordered table-hover" id="ztabela">                                      
                 </table>
                </div>
-            </form>
+
         
     </div> 
     <!-- Optional JavaScript -->
@@ -52,55 +34,66 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
     
    <script>
-function addClass(el, classNameToAdd){
-    el.className += ' ' + classNameToAdd;   
-}   
+   
 //loading
-var ruz = JSON.parse(localStorage.getItem('ruz'));
-var ljilj = JSON.parse(localStorage.getItem('ljilj'));
-var ger = JSON.parse(localStorage.getItem('ger'));
-var user = JSON.parse(localStorage.getItem('user'));
-var kartica = localStorage.getItem('kartica');
-var dostava = localStorage.getItem('dostava');
-
-var Cena = localStorage.getItem(document.getElementById('kompl-cena').value);
-
-document.getElementById('user').innerHTML = user.imeprezime;
-document.getElementById('kartica').innerHTML = kartica;
+	var user = JSON.parse(localStorage.getItem('user'));
+	var kartica = localStorage.getItem('kartica');
+	var dostava = localStorage.getItem('dostava');
+	var Cena = localStorage.getItem('Cena');
 
 
+	if (dostava=='true'){
+		document.getElementById('dostava').innerHTML = 'Troškovi dostave od 500 RSD su uključeni u cenu.';
+		Cena= parseInt(Cena) + 500;
+	} else {
+		document.getElementById('dostava').innerHTML = 'Troškovi dostave nisu uključeni u cenu, platićete ih kurirskoj službi prilikom preuzimanja';
+	}
+	document.getElementById('kompl-cena').innerHTML = Cena;
+	document.getElementById('user').innerHTML = user.imeprezime;
+	document.getElementById('kartica').innerHTML = kartica;
 
-if(ruz.quantity>0){
-	document.getElementById('ruz-kol').innerHTML = ruz.quantity;
-	document.getElementById('ruz-ukcena').innerHTML =ruz.quantity * ruz.price;
-    document.getElementById('ruz-kom').innerHTML =ruz.price;
-} else {
-	addClass(document.getElementById('ruza'),'d-none')
-}
-if(ljilj.quantity>0){
-	document.getElementById('ljilj-kol').innerHTML = ljilj.quantity;
-	document.getElementById('ljilj-ukcena').innerHTML =ljilj.quantity * ljilj.price;
-	document.getElementById('ljilj-kom').innerHTML =ljilj.price;
-} else {
-	addClass(document.getElementById('ljiljan'),'d-none')
-}
-if(ger.quantity>0){
-	document.getElementById('ger-kol').innerHTML = ger.quantity;
-	document.getElementById('ger-ukcena').innerHTML =ger.quantity * ger.price;
-	document.getElementById('ger-kom').innerHTML =ger.price;
-} else {
-	addClass(document.getElementById('gerber'),'d-none')
-}
-var ukupnacena = (ruz.quantity * ruz.price) + (ljilj.quantity * ljilj.price) + (ger.quantity * ger.price)
-if (dostava=="true") {
-   ukupnacena += 500; 
-	document.getElementById('dostava').innerHTML = "Troškovi dostave od 500 RSD su uključeni u cenu."
-} else {
-		document.getElementById('dostava').innerHTML = "Kurirska služba će vam naplatiti dostavu po njihovom cenovniku."
-}
-document.getElementById('kompl-cena').innerHTML = ukupnacena;
+    var jj=0;
+    var cvet=[];
+    for (i=0; i<localStorage.length; i++)  
+    {  
+        var trenutni = localStorage.key(i);
+        if( trenutni !=  'dostava'  && trenutni !=  'kartica' && trenutni !=  'user' && trenutni !=  'Cena'){       
+        cvet[jj] = trenutni;  
+        jj++; 
+        }
+    } 
+    
+     var ztabela=document.getElementById('ztabela');
+     for (i=0; i<cvet.length; i++) {
+         var ime = cvet[i];
+	      var tmp = JSON.parse(localStorage.getItem(ime));
+	      var tr = document.createElement('tr');
+       	ztabela.appendChild(tr);
+			var td1 = document.createElement('td');  
+			var img = document.createElement('img');
+			img.setAttribute('src','img/'+ime+'.png');
+			 	img.setAttribute('alt',ime);
+			img.setAttribute('height','50');
+			td1.innerHTML = capitalize(ime);
+			td1.appendChild(img);
+			tr.appendChild(td1);        
+         
+         var td2 = document.createElement('td'); 
+         td2.innerHTML = 'Količina:' + tmp.quantity;
+         tr.appendChild(td2);
+         
+         var td3 = document.createElement('td'); 
+         td3.innerHTML = tmp.price*tmp.quantity + ' RSD';
+         tr.appendChild(td3);        
 
+         var td4 = document.createElement('td'); 
+         td4.innerHTML = 'Po komadu: ' +  tmp.price;
+         tr.appendChild(td4);       
+       
+     } 
+         
 
+function capitalize(s){return s[0].toUpperCase() + s.slice(1);} 
  
    </script>    
     
