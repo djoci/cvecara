@@ -36,107 +36,51 @@
                 <button type="submit" class="btn btn-primary btn-lg">Potvrdi kupovinu</button>
             </form>
         
-    </div> 
+    </div>
+   
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
-   <script>
-   function osveziCenu(IDprod, IDcena, IDukupno) {
-    document.getElementById(IDukupno).value=document.getElementById(IDprod).value * document.getElementById(IDcena).value; 
-    osveziKupovinu();	  	
-   }
-    function osveziKupovinu() {
-             var sve_ukcena = document.querySelectorAll("[id$=-ukcena]");
-             var kompl_cena = 0;
+  <script src="js/db.js"></script>
+  <script>
+       function osveziCenu(IDprod, IDcena, IDukupno) {
+        document.getElementById(IDukupno).value=document.getElementById(IDprod).value * document.getElementById(IDcena).value; 
+        osveziKupovinu();	  	
+       }
+       function osveziKupovinu() {
+             let sve_ukcena = document.querySelectorAll("[id$=-ukcena]");
+             let kompl_cena = 0;
              for (i=0;i<sve_ukcena.length;i++) {
              	kompl_cena += parseInt(sve_ukcena[i].value);           
              }
              document.getElementById('kompl-cena').value = kompl_cena;
              localStorage.setItem("Cena", kompl_cena);
-    }  
+        }  
     function zapamti() {
       localStorage.clear();
       osveziKupovinu();
-      var sve = document.querySelectorAll("[id$=-kol]");
+      let sve = document.querySelectorAll("[id$=-kol]");
       for (kk=0; kk<sve.length; kk++) {
-      	var ime=sve[kk].name.substr(0, sve[kk].name.length-4);
-      	var kolicina = sve[kk].value;
-      	var price = document.getElementById(ime+"-kom").value;
- 			var mojcvet = { quantity: kolicina, price: price };
- 			if (parseInt(kolicina) >0) {
- 				localStorage.setItem(ime, JSON.stringify(mojcvet)); 			
- 			}
+      	let ime=sve[kk].name.substr(0, sve[kk].name.length-4);
+      	let kolicina = sve[kk].value;
+      	let price = document.getElementById(ime+"-kom").value;
+ 			  let mojcvet = { quantity: kolicina, price: price };
+ 		  	if (parseInt(kolicina) >0) {
+ 				  localStorage.setItem(ime, JSON.stringify(mojcvet)); 			
+ 			  }
      	       
       }
-  		var user = {imeprezime: document.getElementById("korisnik").value};		
-		var kartica = document.querySelector('input[name="creditcard"]:checked').value;
-		var dostava = document.getElementById('includedelivery').checked;	
+  		let user = {imeprezime: document.getElementById("korisnik").value};		
+		  let kartica = document.querySelector('input[name="creditcard"]:checked').value;
+		  let dostava = document.getElementById('includedelivery').checked;	
 		//storing
-		localStorage.setItem('user', JSON.stringify(user));
-		localStorage.setItem('kartica', kartica);
-		localStorage.setItem('dostava', dostava);
+		  localStorage.setItem('user', JSON.stringify(user));
+		  localStorage.setItem('kartica', kartica);
+		  localStorage.setItem('dostava', dostava);
     } 
 
-    
-   </script>   
-   
-   <script>
-  
-   var ztabela=document.getElementById('ztabela');
-   
-   function dodajcvet(ime,cena) {
-      var tr = document.createElement('tr');
-      ztabela.appendChild(tr); 
-      var td1 = document.createElement('td');  
-      var img = document.createElement('img');
-      img.setAttribute('src','img/'+ime+'.png');
-    	img.setAttribute('alt',ime);
-		img.setAttribute('height','100');
-		td1.innerHTML = capitalize(ime);
-      td1.appendChild(img);
-      tr.appendChild(td1);     
-      
-      var td2 = document.createElement('td'); 
-      var input2 = document.createElement('input');
-		var label2 = document.createElement('label');
-		label2.setAttribute('for', ime+'-kol');
-		label2.innerHTML = 'Količina: &nbsp; &nbsp;';
-      Object.assign(input2, {
-		  className: 'form-control',
-		  type:'number',
-		  id: ime+'-kol',
-		  name: ime+'-kol',
-		  value: 0, 
-		  min: 0,
-		  max: 101,
-		  onchange: function () {
-		  osveziCenu(ime+'-kol',ime+'-kom',ime+'-ukcena');
-  		}
-		});    
-		td2.appendChild(label2);   
-      td2.appendChild(input2); 
-      tr.appendChild(td2); 
-
-      var td3 = document.createElement('td'); 
-      tr.appendChild(td3); 
-      td3.innerHTML='<label for="'+ime+'-ukcena">Ukupna cena:</label> <input type="text" id="'+ime+'-ukcena" name="'+ime+'-ukcena" class="form-control" value=0>';  
-
-      var td4 = document.createElement('td');   
-      td4.innerHTML = ' <label for="'+ime+'-kom">Po komadu:</label> <input type="text" id="'+ime+'-kom" name="'+ime+'-kom" class="form-control  disabled" value="'+cena+'"  disabled> dinara';
-      tr.appendChild(td4);                
- 
-   }
-   function capitalize(s){return s[0].toUpperCase() + s.slice(1);}
-   
-   dodajcvet('lala',181);
-   dodajcvet('karanfil',405);
-   dodajcvet('ruža',302);
-   dodajcvet('gerber',103);
-   dodajcvet('ljiljan',209);
-   dodajcvet('kaktus',304)
-   </script> 
-    
+  </script>
   </body>
 </html>      

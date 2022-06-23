@@ -1,5 +1,6 @@
 html , body {font-family: 'Krub', sans-serif;}
 body {color: #333;}
 h1 {margin: 20px 0;}
+.container {margin-bottom: 50px;}
 .table {box-shadow: 0 2px 4px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);}
 .marg {margin-bottom: 15px;}
